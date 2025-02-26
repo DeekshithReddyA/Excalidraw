@@ -15,8 +15,8 @@ export default function Canvas(){
         }
     }, [canvasRef])
 
-    return<div className="w-screen h-screen">
-        <div className="absolute text-black z-20">
+    return<div className="relative overflow-hidden w-screen h-screen">
+        <div className="absolute text-black">
             <button className="m-1 border border-black" onClick={() => {
                     setShape("text");
                     drawRef.current?.setShape("text");

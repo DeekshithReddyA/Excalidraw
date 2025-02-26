@@ -43,14 +43,14 @@ export function Draw(canvas: HTMLCanvasElement) {
             } else if (shape.type === "arrow") {
                 drawArrow(shape.x, shape.y, shape.endX, shape.endY);
             } else if (shape.type === "text") {
-                ctx.font = "22px Virgil";
+                ctx.font = "31px Virgil";
                 ctx.fillText(shape.content, shape.x, shape.y);
             }
         });
 
         // Draw current text being typed
         if (isTyping) {
-            ctx.font = "22px Virgil";
+            ctx.font = "31px Virgil";
             ctx.fillText(currentText, textX, textY);
             
             // Draw blinking cursor
@@ -220,6 +220,13 @@ export function Draw(canvas: HTMLCanvasElement) {
     // Function to set the shape type
     function setShape(shape: "rect" | "ellipse" | "arrow" | "text") {
         selectedShape = shape;
+            // Update cursor based on selected shape
+        if (selectedShape === "text") {
+            canvas.style.cursor = "text";
+        } else {
+            canvas.style.cursor = "default";
+        }   
+    
         if (isTyping) {
             // Save current text if switching from text mode
             if (currentText.trim() !== "") {
@@ -239,14 +246,6 @@ export function Draw(canvas: HTMLCanvasElement) {
             canvas.style.cursor = "default";
         }
     }
-
-    // Watch for shape changes to update cursor
-    const originalSetShape = setShape;
-    setShape = function(shape: "rect" | "ellipse" | "arrow" | "text") {
-        originalSetShape(shape);
-        updateCursor();
-    };
-
     // Initialize cursor
     updateCursor();
 
