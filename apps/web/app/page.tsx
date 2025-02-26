@@ -1,27 +1,19 @@
-import Image, { type ImageProps } from "next/image";
-import { Button } from "@repo/ui/button";
-import styles from "./page.module.css";
-
-type Props = Omit<ImageProps, "src"> & {
-  srcLight: string;
-  srcDark: string;
-};
-
-const ThemeImage = (props: Props) => {
-  const { srcLight, srcDark, ...rest } = props;
-
-  return (
-    <>
-      <Image {...rest} src={srcLight} className="imgLight" />
-      <Image {...rest} src={srcDark} className="imgDark" />
-    </>
-  );
-};
+"use client";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function Home() {
+
+  const router = useRouter();
+  const [roomId, setRoomId] = useState("");
   return (
     <div>
-      Hi
+      <input type="text" placeholder="RoomId" name="roomId" value={roomId} onChange={(e) => {
+        setRoomId(e.target.value);
+      }}></input>
+      <button onClick={() => {
+        router.push(`/room/${roomId}`);
+      }} >Join Room</button>
     </div>
   );
 }
