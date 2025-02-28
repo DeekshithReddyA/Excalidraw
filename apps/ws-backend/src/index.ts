@@ -5,6 +5,7 @@ import { JWT_SECRET } from "@repo/be-common/config";
 const wss = new WebSocketServer({port : 8080});
 
 let rooms: Map<string, WebSocket[]> = new Map();
+let prevShapes: Map<string , string> = new Map();
 
 function checkUser(token: string): string | null {
     const decoded = jwt.verify(token , JWT_SECRET as string);
@@ -40,8 +41,20 @@ wss.on('connection' , (socket) => {
             if(!rooms.has(roomId)){
                 rooms.set(roomId , []);
             }
+            if(!prevShapes.has(roomId)){
+                prevShapes.set(roomId, message.prevShapes);
+            }
             rooms.get(roomId)?.push(socket);
             console.log(rooms);
+            const sockets = rooms.get(roomId);
+            if(sockets){
+                sockets.forEach((socket) => {
+                    if(socket.readyState === WebSocket.OPEN){
+                        console.log(prevShapes);
+                        socket.send(JSON.stringify(prevShapes.get(roomId)));
+                    }
+                });
+            }
         }
 
         if(message.type === "leave"){
@@ -67,7 +80,6 @@ wss.on('connection' , (socket) => {
             if(sockets){
                 sockets.forEach((socket) => {
                     if(socket.readyState === WebSocket.OPEN){
-                        console.log(message.shapes);
                         socket.send(JSON.stringify(message.shapes));
                     }
                 });

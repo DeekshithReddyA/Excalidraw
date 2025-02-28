@@ -26,7 +26,8 @@ export default function Canvas({ roomId }: CanvasProps){
                 
                 const data = {
                 type : "join",
-                roomId
+                roomId,
+                prevShapes: drawRef.current?.getShapes()
                 }
                 
                 wsRef.current?.send(JSON.stringify(data));
@@ -101,6 +102,10 @@ export default function Canvas({ roomId }: CanvasProps){
                 e.preventDefault();
                 drawRef.current?.setPan(true);
             }}>Pan</button>
+            <button className="m-1 border border-black" onClick={(e) => {
+                e.preventDefault();
+                
+            }}>Share</button>
         </div>
         <canvas onMouseDown={(e) => {
             console.log(e);
