@@ -6,7 +6,6 @@ interface NavbarProps{
         setShape: any;
         pan: boolean;
         setPan: any;
-        clearCanvas: any;
         darkMode: boolean;
         setDarkMode: any;
 }
@@ -25,7 +24,7 @@ export default function Navbar(props: NavbarProps){
             }} className={`${iconStyles} ${hoverStyle} ml-1`}>
                 {props.darkMode ? <Sun /> : <Moon />}
             </div>
-            <div className='border border-r border-neutral-600 my-2'></div>
+            <div className={`${props.darkMode ? "border-neutral-600" : ""} border border-r my-2`}></div>
             <div onClick={(e) =>{
                 e.preventDefault();
                 props.setPan(true);
@@ -61,10 +60,11 @@ export default function Navbar(props: NavbarProps){
             }} className={`${iconStyles} ${props.shape === "text" ? bg_blue : hoverStyle}`}>
                 <T />
             </div>
-            <div className='border border-r border-neutral-600 my-2'></div>
+            <div className={`${props.darkMode ? "border-neutral-600" : ""} border border-r my-2`}></div>
             <div onClick={(e) => {
                 e.preventDefault();
-                props.clearCanvas(true);
+                const event = new CustomEvent('clearcanvas');
+                window.dispatchEvent(event);
             }} className={`${iconStyles} hover:bg-red-500/50 mr-1`}>
                 <Bin />
             </div>

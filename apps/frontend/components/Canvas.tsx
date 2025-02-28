@@ -13,12 +13,14 @@ type Shapes = "text" | "rect" | "ellipse" | "arrow" | "";
 export default function Canvas({ roomId }: CanvasProps){
     const [name , setName ]  = useState("");
     const [link , setLink] = useState("");
-    const [liveCollab , setLiveCollab] = useState<boolean>(false);
+    let temp;
+    if(roomId !== undefined) temp = true;
+    else temp = false;
+    const [liveCollab , setLiveCollab] = useState<boolean>(temp);
     const [modalOpen , setModalOpen] = useState<boolean>(false); 
     const [darkMode , setDarkMode ] = useState<boolean>(false);
     const [shape , setShape] = useState<Shapes>("rect");
     const [pan , setPan] = useState<boolean>(false);
-    const [clearCanvas , setClearCanvas] = useState<boolean>(false);
     const str = localStorage.getItem('prevShapes') || '[]';
     const prevShapes: Shape[]  = JSON.parse(str) || [];
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -97,9 +99,6 @@ export default function Canvas({ roomId }: CanvasProps){
         };
     }, []);
 
-    useEffect(() => {
-
-    })
 
     useEffect(() => {
         drawRef.current?.setShape(shape);
@@ -127,18 +126,18 @@ export default function Canvas({ roomId }: CanvasProps){
         <div className="absolute md:right-5 md:top-5 right-2 top-5 text-black">
             <div onClick={(e) => {
                 e.preventDefault();
+                console.log(liveCollab);
                 setModalOpen(true);
-            }} className={`${darkMode ? "bg-violet-400 text-black" : "bg-violet-500 text-white"} cursor-pointer md:p-2 p-1 text-xs md:text-sm rounded-lg`}>
+            }} className={`${darkMode ? `${liveCollab ? "bg-green-500" : "bg-violet-400"} text-black` : `${liveCollab ? "bg-green-400" : "bg-violet-500"} text-white`} cursor-pointer md:p-2 p-1 text-xs md:text-sm rounded-lg`}>
             Share
             </div>
         </div>
         <div className="flex justify-center">
         <div className="absolute flex text-black dark:text-white font-[Virgil]">
-            <Navbar darkMode={darkMode} setDarkMode={setDarkMode} clearCanvas={setClearCanvas} pan={pan} setPan={setPan} shape={shape} setShape={setShape}/>
+            <Navbar darkMode={darkMode} setDarkMode={setDarkMode} pan={pan} setPan={setPan} shape={shape} setShape={setShape}/>
         </div>
 
         <canvas onMouseDown={(e) => {
-            console.log(e);
         }} ref={canvasRef} width={window.innerWidth} height={window.innerHeight} className={`${darkMode ? "bg-black" : "bg-gray-100"}`}></canvas>
         </div>
     </div>
