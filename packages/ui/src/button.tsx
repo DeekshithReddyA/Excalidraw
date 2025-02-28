@@ -6,13 +6,19 @@ interface ButtonProps {
   children: ReactNode;
   className?: string;
   appName: string;
+  onClick?: any;
+  variant: "primary" | "primary-dark"
 }
 
-export const Button = ({ children, className, appName }: ButtonProps) => {
+export const Button = ({ children, variant, className, onClick, appName }: ButtonProps) => {
+  const styles = {
+    "primary" : "" ,
+    "primary-dark" : ""
+  }
   return (
-    <button
-      className={className}
-      onClick={() => alert(`Hello from your ${appName} app!`)}
+    <button 
+      className={`${className}`}
+      onClick={onClick}
     >
       {children}
     </button>

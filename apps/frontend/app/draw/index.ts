@@ -1,10 +1,12 @@
 import { Shape } from "@/types/Shape";
+import hand from './hand.svg'
 
 export class DrawingCanvas {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D | null;
   private prevShapes: Shape[];
   
+  private strokeColor: "black" | "white" = "white";
   private startX: number = 0;
   private startY: number = 0;
   private pan: boolean = false;
@@ -20,12 +22,13 @@ export class DrawingCanvas {
   private lastOffsetY: number = 0;
   private scale: number = 1;
   private readonly scaleFactor: number = 1.1;
-  private selectedShape: "rect" | "ellipse" | "arrow" | "text" = "rect";
+  private selectedShape: "rect" | "ellipse" | "arrow" | "text" | "" = "rect";
 
   constructor(canvas: HTMLCanvasElement, prevShapes: Shape[] = []) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
     this.prevShapes = prevShapes;
+    if(this.ctx !== null) this.ctx.lineWidth = 2;
     
     this.initEventListeners();
     this.updateCursor();
@@ -38,6 +41,11 @@ export class DrawingCanvas {
     window.dispatchEvent(event);
     }
 
+  public setStrokeColor(theme: "dark" | "light"): void {
+    theme === "dark" ? this.strokeColor = "white" : this.strokeColor = "black";
+    this.redrawCanvas();
+  }
+
   private redrawCanvas(): void {
     if (!this.ctx) return;
     
@@ -49,7 +57,8 @@ export class DrawingCanvas {
     this.ctx.scale(this.scale, this.scale);
 
     // Redraw stored shapes
-    this.ctx.strokeStyle = "black";
+    this.ctx.strokeStyle = this.strokeColor;
+    this.ctx.fillStyle = this.strokeColor;
     this.prevShapes.forEach(shape => {
       if (shape.type === "rect") {
         this.ctx!.strokeRect(shape.x, shape.y, shape.w, shape.h);
@@ -75,6 +84,7 @@ export class DrawingCanvas {
       const now = Date.now();
       if (Math.floor(now / 500) % 2 === 0) {
         this.ctx.beginPath();
+        this.ctx.strokeStyle = this.strokeColor;
         this.ctx.moveTo(this.textX + textWidth, this.textY - 20);
         this.ctx.lineTo(this.textX + textWidth, this.textY);
         this.ctx.stroke();
@@ -150,16 +160,19 @@ export class DrawingCanvas {
       this.ctx.scale(this.scale, this.scale);
 
       if (this.selectedShape === "rect") {
+        this.ctx.strokeStyle = this.strokeColor;
         this.ctx.strokeRect(this.startX, this.startY, endX - this.startX, endY - this.startY);
       } else if (this.selectedShape === "ellipse") {
         const centerX = (this.startX + endX) / 2;
         const centerY = (this.startY + endY) / 2;
         const rx = Math.abs(endX - this.startX) / 2;
         const ry = Math.abs(endY - this.startY) / 2;
+        this.ctx.strokeStyle = this.strokeColor;
         this.ctx.beginPath();
         this.ctx.ellipse(centerX, centerY, rx, ry, 0, 0, Math.PI * 2);
         this.ctx.stroke();
       } else if (this.selectedShape === "arrow") {
+        this.ctx.strokeStyle = this.strokeColor;
         this.drawArrow(this.startX, this.startY, endX, endY);
       }
 
@@ -281,7 +294,7 @@ export class DrawingCanvas {
     window.addEventListener("keydown", this.handleKeyDown);
   }
 
-  public setShape(shape: "rect" | "ellipse" | "arrow" | "text"): void {
+  public setShape(shape: "rect" | "ellipse" | "arrow" | "text" | ""): void {
     this.selectedShape = shape;
     this.pan = false;
     

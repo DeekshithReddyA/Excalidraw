@@ -2,14 +2,24 @@
 import { DrawingCanvas } from "@/app/draw";
 import { useEffect, useRef, useState } from "react"
 import { Shape } from "@/types/Shape";
+import Navbar from "./Navbar";
+import { ShareModal } from "./ShareModal";
+import { randomUUID } from "crypto";
 
 interface CanvasProps{
     roomId?: string;
 }
-type Shapes = "text" | "rect" | "ellipse" | "arrow"
+type Shapes = "text" | "rect" | "ellipse" | "arrow" | "";
 
 export default function Canvas({ roomId }: CanvasProps){
+    const [name , setName ]  = useState("");
+    const [link , setLink] = useState("");
+    const [liveCollab , setLiveCollab] = useState<boolean>(false);
+    const [modalOpen , setModalOpen] = useState<boolean>(false); 
+    const [darkMode , setDarkMode ] = useState<boolean>(false);
     const [shape , setShape] = useState<Shapes>("rect");
+    const [pan , setPan] = useState<boolean>(false);
+    const [clearCanvas , setClearCanvas] = useState<boolean>(false);
     const str = localStorage.getItem('prevShapes') || '[]';
     const prevShapes: Shape[]  = JSON.parse(str) || [];
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -78,37 +88,50 @@ export default function Canvas({ roomId }: CanvasProps){
         };
     }, []);
 
-    return<div className="relative overflow-hidden w-screen h-screen">
-        <div className="absolute text-black font-[Virgil]">
-            <button className="m-1 border border-black" onClick={(e) => {
-                    e.preventDefault();
-                    drawRef.current?.setShape("text");
-                }}>
-                    Text
-                </button>
-            <button className="m-1 border border-black" onClick={(e) => {
+    useEffect(() => {
+        drawRef.current?.setShape(shape);
+    }, [shape]);
+
+    useEffect(() => {
+        drawRef.current?.setPan(pan);
+    }, [pan]);
+
+    useEffect(() => {
+        drawRef.current?.clearCanvas();
+        setClearCanvas(false);
+    },[clearCanvas]);
+    
+    useEffect(() => {
+        if(darkMode)
+        drawRef.current?.setStrokeColor("dark");
+        else drawRef.current?.setStrokeColor("light");
+    }, [darkMode]);
+
+    useEffect(() => {
+        if(liveCollab) {
+            const generatedLink = crypto.randomUUID();
+            setLink(generatedLink);
+        }
+    },[liveCollab])
+
+    return<div className="relative overflow-hidden w-screen">
+        {modalOpen && <ShareModal link={link} liveCollab={liveCollab} setLiveCollab={setLiveCollab} setModalOpen={setModalOpen} name={name} setName={setName} darkMode={darkMode}/>}
+        <div className="absolute md:right-5 md:top-5 right-2 top-5 text-black">
+            <div onClick={(e) => {
                 e.preventDefault();
-                drawRef.current?.setShape("rect");
-            }}>Rectangle</button>
-            <button className="m-1 border border-black" onClick={(e) => {
-                e.preventDefault();
-                drawRef.current?.setShape("ellipse");
-            }}>Ellipse</button>
-            <button className="m-1 border border-black" onClick={(e) => {
-                e.preventDefault();
-                drawRef.current?.setShape("arrow");
-            }}>Arrow</button>
-            <button className="m-1 border border-black" onClick={(e) => {
-                e.preventDefault();
-                drawRef.current?.setPan(true);
-            }}>Pan</button>
-            <button className="m-1 border border-black" onClick={(e) => {
-                e.preventDefault();
-                
-            }}>Share</button>
+                setModalOpen(true);
+            }} className={`${darkMode ? "bg-violet-400 text-black" : "bg-violet-500 text-white"} cursor-pointer md:p-2 p-1 text-xs md:text-sm rounded-lg`}>
+            Share
+            </div>
         </div>
+        <div className="flex justify-center">
+        <div className="absolute flex text-black dark:text-white font-[Virgil]">
+            <Navbar darkMode={darkMode} setDarkMode={setDarkMode} clearCanvas={setClearCanvas} pan={pan} setPan={setPan} shape={shape} setShape={setShape}/>
+        </div>
+
         <canvas onMouseDown={(e) => {
             console.log(e);
-        }} ref={canvasRef} width={window.innerWidth} height={window.innerHeight} className="bg-white"></canvas>
+        }} ref={canvasRef} width={window.innerWidth} height={window.innerHeight} className={`${darkMode ? "bg-black" : "bg-gray-100"}`}></canvas>
+        </div>
     </div>
 }
