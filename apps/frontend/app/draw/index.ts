@@ -6,7 +6,7 @@ export class DrawingCanvas {
   private ctx: CanvasRenderingContext2D | null;
   private prevShapes: Shape[];
   
-  private strokeColor: "black" | "white" = "white";
+  private strokeColor: "black" | "white" = "black";
   private startX: number = 0;
   private startY: number = 0;
   private pan: boolean = false;
@@ -331,7 +331,6 @@ export class DrawingCanvas {
   public updateShapes(shapes: Shape[]): void {
     this.prevShapes = shapes;
     this.redrawCanvas();
-
     }
 
   private updateCursor(): void {
