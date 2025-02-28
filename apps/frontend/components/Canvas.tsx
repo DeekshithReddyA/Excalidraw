@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react"
 import { Shape } from "@/types/Shape";
 import Navbar from "./Navbar";
 import { ShareModal } from "./ShareModal";
-import { randomUUID } from "crypto";
 
 interface CanvasProps{
     roomId?: string;
@@ -78,15 +77,29 @@ export default function Canvas({ roomId }: CanvasProps){
         const handleShapeChange = () => {
             sendShapesUpdate();
         };
+
+        const sendClearCanvas = () => {
+            drawRef.current?.clearCanvas();
+        }
+
+        const handleClearCanvas = () => {
+            sendClearCanvas();
+        }
         
         // Add event listener
         window.addEventListener('shapechange', handleShapeChange);
+        window.addEventListener('clearcanvas' , handleClearCanvas);
         
         // Clean up event listener
         return () => {
             window.removeEventListener('shapechange', handleShapeChange);
+            window.addEventListener('clearcanvas' , handleClearCanvas);
         };
     }, []);
+
+    useEffect(() => {
+
+    })
 
     useEffect(() => {
         drawRef.current?.setShape(shape);
@@ -95,11 +108,6 @@ export default function Canvas({ roomId }: CanvasProps){
     useEffect(() => {
         drawRef.current?.setPan(pan);
     }, [pan]);
-
-    useEffect(() => {
-        drawRef.current?.clearCanvas();
-        setClearCanvas(false);
-    },[clearCanvas]);
     
     useEffect(() => {
         if(darkMode)

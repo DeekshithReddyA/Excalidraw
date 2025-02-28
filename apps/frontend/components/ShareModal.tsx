@@ -15,7 +15,7 @@ export function ShareModal(props: ShareModalProps) {
   return (
     <div className="absolute z-50 w-screen h-screen backdrop-blur-sm flex items-center justify-center">
       <div
-        className={`p-3 rounded-lg shadow-lg flex flex-col items-center justify-center ${props.darkMode ? "text-white border border-neutral-800" : "border text-black"}`}
+        className={`p-3 rounded-lg shadow-lg flex flex-col items-center justify-center ${props.darkMode ? "bg-black text-white border border-neutral-800" : "bg-white border text-black"}`}
       >
         <div
           onClick={(e) => {

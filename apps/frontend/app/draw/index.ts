@@ -24,10 +24,10 @@ export class DrawingCanvas {
   private readonly scaleFactor: number = 1.1;
   private selectedShape: "rect" | "ellipse" | "arrow" | "text" | "" = "rect";
 
-  constructor(canvas: HTMLCanvasElement, prevShapes: Shape[] = []) {
+  constructor(canvas: HTMLCanvasElement, prevShape: Shape[] = []) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
-    this.prevShapes = prevShapes;
+    this.prevShapes = prevShape;
     if(this.ctx !== null) this.ctx.lineWidth = 2;
     
     this.initEventListeners();
@@ -92,7 +92,8 @@ export class DrawingCanvas {
     }
 
     this.ctx.restore();
-    localStorage.setItem('prevShapes', JSON.stringify(this.prevShapes));
+    if(this.prevShapes.length !== 0)
+      localStorage.setItem('prevShapes', JSON.stringify(this.prevShapes));
   }
 
   private drawArrow(x: number, y: number, endX: number, endY: number): void {
