@@ -5,22 +5,28 @@ import { ReactNode } from "react";
 interface ButtonProps {
   children: ReactNode;
   className?: string;
-  appName: string;
   onClick?: any;
-  variant: "primary" | "primary-dark"
+  variant: "primary" | "secondary"
 }
 
-export const Button = ({ children, variant, className, onClick, appName }: ButtonProps) => {
+export const Button = ({ children, variant, className, onClick}: ButtonProps) => {
   const styles = {
-    "primary" : "" ,
-    "primary-dark" : ""
+    "primary" : "px-4 py-2 text-white shadow-md" ,
+    "secondary" : ""
+  }
+  const hoverStyles = {
+    "primary" : "hover:shadow-lg transition-all duration-300" ,
+    "secondary" : ""
   }
   return (
-    <button 
-      className={`${className}`}
-      onClick={onClick}
+    <div 
+      className={`${styles[variant]} ${className} ${hoverStyles[variant]}`}
     >
+    <button
+      onClick={onClick}
+      >
       {children}
     </button>
+      </div>
   );
 };

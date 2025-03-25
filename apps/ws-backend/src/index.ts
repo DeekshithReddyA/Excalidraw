@@ -45,12 +45,10 @@ wss.on('connection' , (socket) => {
                 prevShapes.set(roomId, message.prevShapes);
             }
             rooms.get(roomId)?.push(socket);
-            console.log(rooms);
             const sockets = rooms.get(roomId);
             if(sockets){
                 sockets.forEach((socket) => {
                     if(socket.readyState === WebSocket.OPEN){
-                        console.log(prevShapes);
                         socket.send(JSON.stringify(prevShapes.get(roomId)));
                     }
                 });
@@ -86,7 +84,6 @@ wss.on('connection' , (socket) => {
             }
         }
 
-        console.log(JSON.parse(data.toString()));
         
     });
 

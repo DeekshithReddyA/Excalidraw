@@ -1,8 +1,8 @@
 "use client";
-import {ArrowRight, Bin, Circle, Grab, Hand, Moon, Square, Sun, T} from '@repo/ui/icons'
+import {ArrowRight, Bin, Circle, Grab, Hand, Moon, Pencil, Square, Sun, T} from '@repo/ui/icons'
 
 interface NavbarProps{
-        shape: "rect" | "ellipse" | "arrow" | "text" | "";
+        shape: "rect" | "ellipse" | "arrow" | "text" | "freehand" | "";
         setShape: any;
         pan: boolean;
         setPan: any;
@@ -51,7 +51,14 @@ export default function Navbar(props: NavbarProps){
                 props.setShape("arrow");
                 props.setPan(false);
             }} className={`${iconStyles} ${props.shape === "arrow" ? bg_blue : hoverStyle}`}>
-                <ArrowRight />
+                <ArrowRight size={18}/>
+            </div>
+            <div onClick={(e) => {
+                e.preventDefault();
+                props.setShape("freehand");
+                props.setPan(false);
+            }} className={`${iconStyles} ${props.shape === "freehand" ? bg_blue : hoverStyle}`}>
+                <Pencil size={17}/>
             </div>
             <div onClick={(e) => {
                 e.preventDefault();
