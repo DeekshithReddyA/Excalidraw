@@ -4,7 +4,7 @@ export function Technical() {
   return (
     <div className="flex flex-col items-center justify-center w-full mt-10">
       <div className="text-3xl font-semibold">
-        Built with Modern Architecture
+            Built with Modern Architecture
       </div>
       <div className="text-xl font-semibold my-4">Monorepo & Turborepo</div>
       <div className="grid grid-cols-2">
@@ -63,7 +63,7 @@ export function Technical() {
             </div>
           </div>
         </div>
-        <div className="col-span-1">sd</div>
+      <div className="col-span-1">sd</div>
       </div>
     </div>
   );
