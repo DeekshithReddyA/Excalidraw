@@ -4,7 +4,7 @@ export function Technical() {
   return (
     <div className="flex flex-col items-center justify-center w-full mt-10">
       <div className="text-3xl font-semibold">
-            Built with Modern Architecture
+        Built with Modern Architecture
       </div>
       <div className="text-xl font-semibold my-4">Monorepo & Turborepo</div>
       <div className="grid grid-cols-2">
@@ -31,39 +31,35 @@ export function Technical() {
                 <div>excalidraw-clone/</div>
                 <div>├─ apps/</div>
                 <div className="flex space-x-20">
-                    <div className="">
-                     │  ├─ web/
-                    </div>
-                    <div>
-                      # NextJS frontend
-                    </div>
+                  <div className="">│ ├─ web/</div>
+                  <div># NextJS frontend</div>
                 </div>
                 <div className="flex space-x-20">
-                    <div> │   └─ api/ </div>
-                    <div># Backend services</div>
+                  <div> │ └─ api/ </div>
+                  <div># Backend services</div>
                 </div>
                 <div>├─ packages/</div>
                 <div className="flex space-x-20">
-                    <div> │ ├─ ui/ </div>
-                    <div># Shared UI components</div>
+                  <div> │ ├─ ui/ </div>
+                  <div># Shared UI components</div>
                 </div>
                 <div className="flex space-x-16">
-                    <div> │ ├─ utils/ </div>
-                    <div># Common utilities</div>
+                  <div> │ ├─ utils/ </div>
+                  <div># Common utilities</div>
                 </div>
                 <div className="flex space-x-14">
-                    <div> │ └─ types/ </div>
-                    <div># Shared TypeScript types</div>
+                  <div> │ └─ types/ </div>
+                  <div># Shared TypeScript types</div>
                 </div>
                 <div className="flex space-x-12">
-                    <div> └─ turbo.json </div>
-                    <div># Turborepo configuration</div>
+                  <div> └─ turbo.json </div>
+                  <div># Turborepo configuration</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      <div className="col-span-1">sd</div>
+        <div className="col-span-1">sd</div>
       </div>
     </div>
   );
