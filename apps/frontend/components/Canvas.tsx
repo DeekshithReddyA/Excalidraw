@@ -1,4 +1,3 @@
-"use client";
 import { DrawingCanvas } from "@/app/draw";
 import { useEffect, useRef, useState } from "react";
 import { Shape } from "@/types/Shape";
@@ -6,6 +5,7 @@ import Navbar from "./Navbar";
 import { ShareModal } from "./ShareModal";
 import { Redo, Undo } from "@repo/ui/icons";
 import { WS_URL } from "@/app/config";
+import { v4 as uuid} from "uuid";
 
 interface CanvasProps {
   roomId?: string;
@@ -167,7 +167,7 @@ export default function Canvas({ roomId }: CanvasProps) {
 
   useEffect(() => {
     if (liveCollab && typeof window !== "undefined") {
-      const generatedLink = crypto.randomUUID();
+      const generatedLink = uuid();
       setLink(generatedLink);
     }
   }, [liveCollab]);

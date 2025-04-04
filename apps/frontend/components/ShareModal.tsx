@@ -1,3 +1,4 @@
+"use client";
 import {FE_URL} from "@/app/config";
 import { Clipboard, CopiedClipboard, X } from "@repo/ui/icons";
 import { useRouter } from "next/navigation";
@@ -26,6 +27,7 @@ export function ShareModal(props: ShareModalProps) {
 
   const handleCopyClick = async () => {
     try {
+      console.log(FE_URL+ " " + props.link);
       await window.navigator.clipboard.writeText(FE_URL + props.link);
     } catch (err) {
       console.error(err);
