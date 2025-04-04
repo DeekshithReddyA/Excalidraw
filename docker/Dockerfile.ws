@@ -2,7 +2,7 @@ FROM node:20-alpine
 
 RUN npm install -g pnpm
 
-WORKDIR /excalidraw/app
+WORKDIR /excalidraw/ws
 
 COPY ./packages ./packages
 COPY ./apps/ws-backend ./apps/ws-backend
