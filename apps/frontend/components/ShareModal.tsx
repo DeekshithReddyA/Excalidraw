@@ -1,4 +1,4 @@
-import FE_URL from "@/app/config";
+import {FE_URL} from "@/app/config";
 import { Clipboard, CopiedClipboard, X } from "@repo/ui/icons";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

@@ -5,6 +5,7 @@ import { Shape } from "@/types/Shape";
 import Navbar from "./Navbar";
 import { ShareModal } from "./ShareModal";
 import { Redo, Undo } from "@repo/ui/icons";
+import { WS_URL } from "@/app/config";
 
 interface CanvasProps {
   roomId?: string;
@@ -84,7 +85,7 @@ export default function Canvas({ roomId }: CanvasProps) {
     }
 
     if (roomId && typeof window !== "undefined" && drawRef.current) {
-      wsRef.current = new WebSocket(`ws://localhost:8080`);
+      wsRef.current = new WebSocket(WS_URL as string);
       wsRef.current.onopen = () => {
         const data = {
           type: "join",

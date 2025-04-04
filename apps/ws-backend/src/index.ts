@@ -1,20 +1,9 @@
 import { WebSocket, WebSocketServer } from "ws";
-import jwt from 'jsonwebtoken';
-import { JWT_SECRET } from "@repo/be-common/config";
 
 const wss = new WebSocketServer({port : 8080});
 
 let rooms: Map<string, WebSocket[]> = new Map();
 let prevShapes: Map<string , string> = new Map();
-
-function checkUser(token: string): string | null {
-    const decoded = jwt.verify(token , JWT_SECRET as string);
-
-    if(typeof decoded === "string"){
-        return null;
-    }
-    return decoded.userId;
-}
 
 wss.on('connection' , (socket) => {
     // const url = request.url;
